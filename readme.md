@@ -91,6 +91,20 @@
 
 本文介绍了 Pinterest 的 Pixie 系统，主要针对他们开发的随机游走和剪枝算法，此外系统本身基于 Stanford Network Analysis Platform 实现。
 
+## 基于树的推荐
+
+1. 《Learning Tree-based Deep Model for Recommender Systems》淘宝的推荐系统，2018年最新发布
+
+基于树的推荐是一种比较新奇的一种推荐算法，其设计的目的主要是解决淘宝的巨大的数据问题，给出了一种能线上服务的实时推荐系统的模型。此外，本文证明了此模型在MovieLens-20M和淘宝自己的用户数据上的准确、召回、新奇性都比传统方法好。
+
+采用的数据是隐式反馈，本模型提供几百个候选集，然后实时预测系统会进行排序策略。
+
+树的作用不仅仅是作为索引使用，更重要的是把海量的数据进行了层次化组织。训练过程是如果用户对某个物品感兴趣，那么最大化从该物品节点到根节点的每个节点的联合概率。该路径上的每个节点都和用户有相关性，树的结构从底向上表现出了用户物品的相似性和依赖性。
+
+如下图所示，左侧的三层全连接学习到用户的向量表示，右侧的树结构学到了节点的表示，最后通过二分类来训练出用户是否对该节点感兴趣。训练的损失函数是最小化一个用户对每个采样了的节点的交叉熵。（树结构类似于Hierarchical softmax，也同样使用了负采样等。）
+
+![此处输入图片的描述][11]
+
 ## 公司的推荐系统的发展历程
 
 1. 《Related Pins at Pinterest: The Evolution of a Real-World Recommender System》Pinterest的推荐系统发展历程
@@ -103,7 +117,7 @@
 > 3. 渐渐地，发现单一的推荐算法很难满足产品想要优化的不同目标，所以引入了针对不同产品需求生成的候选集(Local Cands)，将排序分为两部分，机器粗排，和手调。
 > 4. 最后，引入了更多的候选集，并且提高了排序部分的性能，用机器学习实现了实时的个性化推荐排序。
 
-![此处输入图片的描述][11]
+![此处输入图片的描述][12]
 
 ## 数据集
 
@@ -116,6 +130,7 @@
 
 个人转载请注明作者和仓库地址，商业和自媒体转载前务必联系作者fuxuemingzhu@163.com。
 
+
   [1]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p1.png
   [2]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p2.png
   [3]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p3.png
@@ -126,4 +141,5 @@
   [8]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p8.png
   [9]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p9.png
   [10]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p10.png
-  [11]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png
+  [11]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p12.png
+  [12]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png

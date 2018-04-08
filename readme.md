@@ -70,6 +70,14 @@
 
 ![此处输入图片的描述][9]
 
+2. 《Visually Explainable Recommendation》可视化地可解释推荐模型
+
+这个文章放在基于视觉的推荐的原因是，比较新奇的地方在于提取了商品封面的特征，并融合到了推荐和推荐解释之中。本文的基础模型使用商品的封面通过预训练好的VGG网络转化为图像向量。对特征进行加权求和之后的结果与商品的向量merge，再与用户的向量内积求总的向量结果，把该结果进行和用户是否购买的真实数据求交叉熵，优化该Loss.文章指出该模型最后训练的结果可以用推荐，也可以用注意力权重来做推荐解释。
+
+本文还提出了进一步的模型Re-VECF。该模型使用商品的用户评论结合图像、用户和商品作单词预测训练GRU。加入用户评论的好处是可以提高推荐的表现、文本评论可能隐含着用户对商品封面重要的偏好。该模型能更好的做出推荐结果和推荐解释。
+
+![此处输入图片的描述][10]
+
 ## 基于RNN的推荐
 
 1. 《Session-based Recommendations with Recurrent Neural Networks》 2016年的文章，GRU4Rec，使用每个会话中用户的行为记录进行训练。
@@ -83,7 +91,7 @@
 
 有一个不错的论文解读文章：http://www.cnblogs.com/daniel-D/p/5602254.html
 
-![此处输入图片的描述][10]
+![此处输入图片的描述][11]
 
 ## 基于图的推荐
 
@@ -103,7 +111,7 @@
 
 如下图所示，左侧的三层全连接学习到用户的向量表示，右侧的树结构学到了节点的表示，最后通过二分类来训练出用户是否对该节点感兴趣。训练的损失函数是最小化一个用户对每个采样了的节点的交叉熵。（树结构类似于Hierarchical softmax，也同样使用了负采样等。）
 
-![此处输入图片的描述][11]
+![此处输入图片的描述][12]
 
 ## 公司的推荐系统的发展历程
 
@@ -117,7 +125,7 @@
 > 3. 渐渐地，发现单一的推荐算法很难满足产品想要优化的不同目标，所以引入了针对不同产品需求生成的候选集(Local Cands)，将排序分为两部分，机器粗排，和手调。
 > 4. 最后，引入了更多的候选集，并且提高了排序部分的性能，用机器学习实现了实时的个性化推荐排序。
 
-![此处输入图片的描述][12]
+![此处输入图片的描述][13]
 
 ## 数据集
 
@@ -140,6 +148,7 @@
   [7]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p7.png
   [8]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p8.png
   [9]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p9.png
-  [10]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p10.png
-  [11]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p12.png
-  [12]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png
+  [10]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p13.png
+  [11]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p10.png
+  [12]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p12.png
+  [13]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png

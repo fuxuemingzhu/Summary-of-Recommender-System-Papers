@@ -282,7 +282,7 @@
   [10]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p23.png
   [11]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p24.png
   [12]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p25.png
-  [13]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p26.png
+  [13]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/031f1cb06c6db210a7b1c7702d43f2ef5ed74e7b/pics/p26.png
   [14]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p4.png
   [15]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p5.png
   [16]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p19.png

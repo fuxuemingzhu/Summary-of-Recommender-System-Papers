@@ -2,6 +2,25 @@
 
 本文主要记录较新的推荐系统论文，并对类似的论文进行总结和整合。
 
+**目录**
+
+* [推荐系统论文归类总结](#推荐系统论文归类总结)
+  * [综述](#综述)
+  * [协同过滤理论](#协同过滤理论)
+  * [矩阵分解](#矩阵分解)
+  * [基于内容的推荐](#基于内容的推荐)
+  * [基于标签的推荐](#基于标签的推荐)
+  * [基于自编码器](#基于自编码器)
+  * [Item2Vec](#item2vec)
+  * [上下文感知模型](#上下文感知模型)
+  * [基于视觉的推荐](#基于视觉的推荐)
+  * [基于RNN的推荐](#基于rnn的推荐)
+  * [基于图的推荐](#基于图的推荐)
+  * [基于树的推荐](#基于树的推荐)
+  * [公司的推荐系统的发展历程](#公司的推荐系统的发展历程)
+  * [数据集](#数据集)
+  * [版权声明](#版权声明)
+
 ## 综述
 
 1. 《Deep Learning based Recommender System: A Survey and New Perspectives》
@@ -141,6 +160,20 @@
 
 ![此处输入图片的描述][17]
 
+## 因子分解机
+
+1. 《Factorization Machines》大名鼎鼎的FM
+
+FM模型是一个可以用于大规模稀疏数据场景下的因式分解模型，这个模型的求解是线性时间复杂度的，他可以使用原始数据直接求解而不需要像SVM一样依赖支持向量。另外FM是个通用的模型，可以在任何实数数据上使用，可以做分类和回归甚至能做排序等任务。
+
+FM的思想是在线性回归的基础上，增加了两个特征的线性组合，求解线性组合的方式是使用了矩阵分解的方式。因为如果数据本身就很稀疏，于是两个变量的共现数据极少，但是矩阵分解使得不同的特征对不再是完全独立的，而它们的关联性可以用隐式因子表示，这将使得有更多的数据可以用于模型参数的学习。目标函数如下：
+
+![此处输入图片的描述][18]
+
+上面的二次项矩阵可以通过数学进行优化，使得时间复杂度降为线性时间复杂度。
+
+![此处输入图片的描述][19]
+
 ## 基于内容的推荐
 
 1. 《Content-Based Recommendation Systems》 基于内容做推荐的综述文献。
@@ -163,15 +196,15 @@
 
 1.基于网络的模型
 
-![此处输入图片的描述][18]
+![此处输入图片的描述][20]
 
 2.基于张量的模型
 
-![此处输入图片的描述][19]
+![此处输入图片的描述][21]
 
 3.基于主题的模型（LDA）
 
-![此处输入图片的描述][20]
+![此处输入图片的描述][22]
 
 ## 基于自编码器
 
@@ -182,11 +215,11 @@
 
 这几篇文章的思想基本一样，本质都是协同过滤。优化的目标在自编码器的基础上稍作修改，优化目标里只去优化有观测值的数据。
 
-![此处输入图片的描述][21]
-
-![此处输入图片的描述][22]
-
 ![此处输入图片的描述][23]
+
+![此处输入图片的描述][24]
+
+![此处输入图片的描述][25]
 
 ## Item2Vec
 
@@ -196,11 +229,11 @@
 
 固定窗口的skip-gram的目标是最大化每个词预测上下文的总概率：
 
-![此处输入图片的描述][24]
+![此处输入图片的描述][26]
 
 使用shuffle操作来让context包含每个句子中所有其他元素，这样就可以使用定长的窗口了。
 
-![此处输入图片的描述][25]
+![此处输入图片的描述][27]
 
 ## 上下文感知模型
 
@@ -208,7 +241,7 @@
 
 这个文章提出，以前的模型学到的用户和物品的隐层向量都是一个静态的，没有考虑到用户对物品的偏好。本文提出了上下文感知模型，使用用户的评论和物品总评论，通过用户-物品对进行CNN训练，加入了注意力层，摘要层，学习到的是用户和物品的联合表达。更倾向于自然语言处理的论文，和传统的推荐模型差距比较大。
 
-![此处输入图片的描述][26]
+![此处输入图片的描述][28]
 
 ## 基于视觉的推荐
 
@@ -217,7 +250,7 @@
 这个文章参考大脑结构，我们把这个排序引擎分为三个组件：一个是视觉感知模块（Vision Extraction），它模拟人脑的视神经系统，提取商品的关键视觉信号并产生激活；另一个是兴趣理解模块（Interest Understanding），它模拟大脑皮层，根据视觉感知模块的激活神经元来理解用户的潜意识（决定用户的潜在兴趣）和表意识（决定用户的当前兴趣）；此外，排序引擎还需要一个打分模块（Scoring），它模拟决策系统，计算商品和用户兴趣（包括潜在兴趣和当前兴趣）的匹配程度。
 兴趣理解模块收集到用户浏览序列的激活信号后，分别通过DNN和RNN，生成两路向量。RNN常用于序列分析，我们用来模拟用户的直接兴趣，DNN一般用以计算更广泛的关系，用来模拟用户的间接兴趣。最终，直接兴趣向量和间接兴趣向量和候选商品激活拼接在一起，送往打分模块。打分模块是个普通的DNN网络，我们用打分模块来拟合用户的点击/购买等行为。最终这些行为的影响通过loss回馈到整个Telepath模型中。在图右侧，还引入了类似Wide & Deep网络的结构，以增强整个模型的表达能力。
 
-![此处输入图片的描述][27]
+![此处输入图片的描述][29]
 
 2.《Visually Explainable Recommendation》可视化地可解释推荐模型
 
@@ -225,7 +258,7 @@
 
 本文还提出了进一步的模型Re-VECF。该模型使用商品的用户评论结合图像、用户和商品作单词预测训练GRU。加入用户评论的好处是可以提高推荐的表现、文本评论可能隐含着用户对商品封面重要的偏好。该模型能更好的做出推荐结果和推荐解释。
 
-![此处输入图片的描述][28]
+![此处输入图片的描述][30]
 
 ## 基于RNN的推荐
 
@@ -240,7 +273,7 @@
 
 有一个不错的论文解读文章：http://www.cnblogs.com/daniel-D/p/5602254.html
 
-![此处输入图片的描述][29]
+![此处输入图片的描述][31]
 
 ## 基于图的推荐
 
@@ -260,7 +293,7 @@
 
 如下图所示，左侧的三层全连接学习到用户的向量表示，右侧的树结构学到了节点的表示，最后通过二分类来训练出用户是否对该节点感兴趣。训练的损失函数是最小化一个用户对每个采样了的节点的交叉熵。（树结构类似于Hierarchical softmax，也同样使用了负采样等。）
 
-![此处输入图片的描述][30]
+![此处输入图片的描述][32]
 
 ## 公司的推荐系统的发展历程
 
@@ -274,12 +307,17 @@
 > 3. 渐渐地，发现单一的推荐算法很难满足产品想要优化的不同目标，所以引入了针对不同产品需求生成的候选集(Local Cands)，将排序分为两部分，机器粗排，和手调。
 > 4. 最后，引入了更多的候选集，并且提高了排序部分的性能，用机器学习实现了实时的个性化推荐排序。
 
-![此处输入图片的描述][31]
+![此处输入图片的描述][33]
 
 ## 数据集
 
 1. 《Indian Regional Movie Dataset for Recommender Systems》提供了印度本土的电影观看数据集
 
+
+## 参考资料
+
+1. [『我爱机器学习』FM、FFM与DeepFM][34]
+2. [Factorization Machines 学习笔记][35]
 
 ## 版权声明
 
@@ -305,17 +343,21 @@
   [15]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p28.png
   [16]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p4.png
   [17]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p5.png
-  [18]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p19.png
-  [19]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p20.png
-  [20]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p21.png
-  [21]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p1.png
-  [22]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p2.png
-  [23]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p3.png
-  [24]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p6.png
-  [25]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p7.png
-  [26]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p8.png
-  [27]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p9.png
-  [28]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p13.png
-  [29]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p10.png
-  [30]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p12.png
-  [31]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png
+  [18]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p29.png
+  [19]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p30.png
+  [20]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p19.png
+  [21]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p20.png
+  [22]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p21.png
+  [23]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p1.png
+  [24]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p2.png
+  [25]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p3.png
+  [26]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p6.png
+  [27]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p7.png
+  [28]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p8.png
+  [29]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p9.png
+  [30]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p13.png
+  [31]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p10.png
+  [32]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p12.png
+  [33]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png
+  [34]: https://www.hrwhisper.me/machine-learning-fm-ffm-deepfm-deepffm/
+  [35]: https://blog.csdn.net/itplus/article/details/40534885

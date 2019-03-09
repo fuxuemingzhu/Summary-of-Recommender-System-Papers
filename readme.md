@@ -185,6 +185,18 @@ FFM是对FM的改进，添加了Field的概念，也就是说每个特征归于�
 
 ![此处输入图片的描述][20]
 
+3.《DeepFM: A Factorization-Machine based Neural Network for CTR Prediction》FM的深度学习版本
+
+这个模型基于``wide & deep``做了改进，首先模型包括FM和DNN部分，是个并联结构，FM和DNN共享相同的输入（embedding）。每个Field独立地embedding到相同的维度，大大减少了网络参数。Field到embedding层的映射向量恰好是FM层学习到的向量。
+
+deep FM的优点：
+1）不需要任何预训练
+2）学习到了低维和高维特征交叉
+3）一个特征embedding的共享策略来避免特征工程
+
+![此处输入图片的描述][21]
+
+
 ## 基于内容的推荐
 
 1. 《Content-Based Recommendation Systems》 基于内容做推荐的综述文献。
@@ -199,10 +211,10 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 推荐系统架构：
 
-![此处输入图片的描述][21]
+![此处输入图片的描述][22]
 
 候选集生成网络：
-![此处输入图片的描述][22]
+![此处输入图片的描述][23]
 
 王喆对这篇文章进行了更详细的解读，并探讨了工程化的问题：https://zhuanlan.zhihu.com/p/52169807
 
@@ -222,15 +234,15 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 1.基于网络的模型
 
-![此处输入图片的描述][23]
+![此处输入图片的描述][24]
 
 2.基于张量的模型
 
-![此处输入图片的描述][24]
+![此处输入图片的描述][25]
 
 3.基于主题的模型（LDA）
 
-![此处输入图片的描述][25]
+![此处输入图片的描述][26]
 
 ## 基于自编码器
 
@@ -241,11 +253,11 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 这几篇文章的思想基本一样，本质都是协同过滤。优化的目标在自编码器的基础上稍作修改，优化目标里只去优化有观测值的数据。
 
-![此处输入图片的描述][26]
-
 ![此处输入图片的描述][27]
 
 ![此处输入图片的描述][28]
+
+![此处输入图片的描述][29]
 
 ## Item2Vec
 
@@ -255,11 +267,11 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 固定窗口的skip-gram的目标是最大化每个词预测上下文的总概率：
 
-![此处输入图片的描述][29]
+![此处输入图片的描述][30]
 
 使用shuffle操作来让context包含每个句子中所有其他元素，这样就可以使用定长的窗口了。
 
-![此处输入图片的描述][30]
+![此处输入图片的描述][31]
 
 ## 上下文感知模型
 
@@ -267,7 +279,7 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 这个文章提出，以前的模型学到的用户和物品的隐层向量都是一个静态的，没有考虑到用户对物品的偏好。本文提出了上下文感知模型，使用用户的评论和物品总评论，通过用户-物品对进行CNN训练，加入了注意力层，摘要层，学习到的是用户和物品的联合表达。更倾向于自然语言处理的论文，和传统的推荐模型差距比较大。
 
-![此处输入图片的描述][31]
+![此处输入图片的描述][32]
 
 ## 基于视觉的推荐
 
@@ -276,7 +288,7 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 这个文章参考大脑结构，我们把这个排序引擎分为三个组件：一个是视觉感知模块（Vision Extraction），它模拟人脑的视神经系统，提取商品的关键视觉信号并产生激活；另一个是兴趣理解模块（Interest Understanding），它模拟大脑皮层，根据视觉感知模块的激活神经元来理解用户的潜意识（决定用户的潜在兴趣）和表意识（决定用户的当前兴趣）；此外，排序引擎还需要一个打分模块（Scoring），它模拟决策系统，计算商品和用户兴趣（包括潜在兴趣和当前兴趣）的匹配程度。
 兴趣理解模块收集到用户浏览序列的激活信号后，分别通过DNN和RNN，生成两路向量。RNN常用于序列分析，我们用来模拟用户的直接兴趣，DNN一般用以计算更广泛的关系，用来模拟用户的间接兴趣。最终，直接兴趣向量和间接兴趣向量和候选商品激活拼接在一起，送往打分模块。打分模块是个普通的DNN网络，我们用打分模块来拟合用户的点击/购买等行为。最终这些行为的影响通过loss回馈到整个Telepath模型中。在图右侧，还引入了类似Wide & Deep网络的结构，以增强整个模型的表达能力。
 
-![此处输入图片的描述][32]
+![此处输入图片的描述][33]
 
 2.《Visually Explainable Recommendation》可视化地可解释推荐模型
 
@@ -284,7 +296,7 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 本文还提出了进一步的模型Re-VECF。该模型使用商品的用户评论结合图像、用户和商品作单词预测训练GRU。加入用户评论的好处是可以提高推荐的表现、文本评论可能隐含着用户对商品封面重要的偏好。该模型能更好的做出推荐结果和推荐解释。
 
-![此处输入图片的描述][33]
+![此处输入图片的描述][34]
 
 ## 基于RNN的推荐
 
@@ -299,7 +311,7 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 有一个不错的论文解读文章：http://www.cnblogs.com/daniel-D/p/5602254.html
 
-![此处输入图片的描述][34]
+![此处输入图片的描述][35]
 
 ## 基于图的推荐
 
@@ -319,7 +331,7 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 如下图所示，左侧的三层全连接学习到用户的向量表示，右侧的树结构学到了节点的表示，最后通过二分类来训练出用户是否对该节点感兴趣。训练的损失函数是最小化一个用户对每个采样了的节点的交叉熵。（树结构类似于Hierarchical softmax，也同样使用了负采样等。）
 
-![此处输入图片的描述][35]
+![此处输入图片的描述][36]
 
 ## 公司的推荐系统的发展历程
 
@@ -333,7 +345,7 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 > 3. 渐渐地，发现单一的推荐算法很难满足产品想要优化的不同目标，所以引入了针对不同产品需求生成的候选集(Local Cands)，将排序分为两部分，机器粗排，和手调。
 > 4. 最后，引入了更多的候选集，并且提高了排序部分的性能，用机器学习实现了实时的个性化推荐排序。
 
-![此处输入图片的描述][36]
+![此处输入图片的描述][37]
 
 ## 数据集
 
@@ -342,8 +354,8 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
 
 ## 参考资料
 
-1. [『我爱机器学习』FM、FFM与DeepFM][37]
-2. [Factorization Machines 学习笔记][38]
+1. [『我爱机器学习』FM、FFM与DeepFM][38]
+2. [Factorization Machines 学习笔记][39]
 
 ## 版权声明
 
@@ -372,21 +384,22 @@ Youtube推荐系统的比较老的解决方案，使用候选集生成网络和�
   [18]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p29.png
   [19]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p30.png
   [20]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p33.png
-  [21]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p31.png
-  [22]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p32.png
-  [23]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p19.png
-  [24]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p20.png
-  [25]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p21.png
-  [26]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p1.png
-  [27]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p2.png
-  [28]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p3.png
-  [29]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p6.png
-  [30]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p7.png
-  [31]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p8.png
-  [32]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p9.png
-  [33]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p13.png
-  [34]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p10.png
-  [35]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p12.png
-  [36]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png
-  [37]: https://www.hrwhisper.me/machine-learning-fm-ffm-deepfm-deepffm/
-  [38]: https://blog.csdn.net/itplus/article/details/40534885
+  [21]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p34.png
+  [22]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p31.png
+  [23]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p32.png
+  [24]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p19.png
+  [25]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p20.png
+  [26]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p21.png
+  [27]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p1.png
+  [28]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p2.png
+  [29]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p3.png
+  [30]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p6.png
+  [31]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p7.png
+  [32]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p8.png
+  [33]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p9.png
+  [34]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p13.png
+  [35]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p10.png
+  [36]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p12.png
+  [37]: https://raw.githubusercontent.com/fuxuemingzhu/Summary-of-Recommender-System-Papers/master/pics/p11.png
+  [38]: https://www.hrwhisper.me/machine-learning-fm-ffm-deepfm-deepffm/
+  [39]: https://blog.csdn.net/itplus/article/details/40534885
